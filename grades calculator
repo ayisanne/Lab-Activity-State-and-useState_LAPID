@@ -1,0 +1,82 @@
+import React, { useState } from 'react';
+import './App.css'; // Import the CSS file for styling
+
+const App = () => {
+const [quiz, setQuiz] = useState('');
+const [lab, setLab] = useState('');
+const [finalExam, setFinalExam] = useState('');
+const [grade, setGrade] = useState(null);
+const [finalGrade, setFinalGrade] = useState(null);
+
+const handleSubmit = (e) => {
+e.preventDefault();
+const quizScore = parseFloat(quiz) * 0.30;
+const labScore = parseFloat(lab) * 0.30;
+const finalExamScore = parseFloat(finalExam) * 0.40;
+
+const totalGrade = quizScore + labScore + finalExamScore;
+setGrade(totalGrade.toFixed(2));
+
+const scaleGrade = calculate4PointScale(totalGrade);
+setFinalGrade(scaleGrade);
+};
+
+const calculate4PointScale = (grade) => {
+if (grade >= 98.51 && grade <= 100) return 4;
+if (grade >= 96.51 && grade <= 98.5) return 3.75;
+if (grade >= 94.51 && grade <= 96.5) return 3.5;
+if (grade >= 92.51 && grade <= 94.5) return 3.25;
+if (grade >= 90.51 && grade <= 92.5) return 3;
+if (grade >= 88.51 && grade <= 90.5) return 2.75;
+if (grade >= 86.51 && grade <= 88.5) return 2.5;
+if (grade >= 84.51 && grade <= 86.5) return 2.25;
+if (grade >= 82.51 && grade <= 84.5) return 2;
+if (grade >= 80.51 && grade <= 82.5) return 1.75;
+if (grade >= 78.51 && grade <= 80.5) return 1.5;
+if (grade >= 76.51 && grade <= 78.5) return 1.25;
+if (grade >= 74.51 && grade <= 76.5) return 1;
+return 0;
+};
+
+return (
+<div className="app">
+<div className="calculator-container">
+<h2>Grades Calculator</h2>
+<form onSubmit={handleSubmit}>
+<input
+type="number"
+placeholder="Quizzes"
+value={quiz}
+onChange={(e) => setQuiz(e.target.value)}
+required
+/>
+<input
+type="number"
+placeholder="Lab Activities"
+value={lab}
+onChange={(e) => setLab(e.target.value)}
+required
+/>
+<input
+type="number"
+placeholder="Final Exam"
+value={finalExam}
+onChange={(e) => setFinalExam(e.target.value)}
+required
+/>
+<button type="submit">Submit</button>
+</form>
+
+{grade && (
+<div className="result">
+<p>Grade: <strong>{grade}</strong></p>
+<p>Final Grade (4-Point Scale): <strong>{finalGrade}</strong></p>
+</div>
+)}
+<button className="logout">Logout</button>
+</div>
+</div>
+);
+};
+
+export default App;
